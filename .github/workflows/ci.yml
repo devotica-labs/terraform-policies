@@ -1,0 +1,63 @@
+# CI for terraform-policies itself.
+#
+# Three jobs:
+#   1. opa-fmt-check  — ensure Rego files are canonically formatted
+#   2. conftest-pass  — run policies against the passing plan, expect 0 violations
+#   3. conftest-fail  — run policies against the violating plan, expect failures
+#                       (we invert the exit code so a violation = test pass)
+
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  opa-fmt-check:
+    name: opa fmt --diff
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: open-policy-agent/setup-opa@34a30e8a924d1b03ce2cf7abe97250bbb1f332b5 # v2.2.0
+        with:
+          version: 0.69.0
+      - name: opa fmt --diff (fail on changes)
+        run: opa fmt --diff policies/
+      - name: opa check (parse + type)
+        run: opa check policies/
+
+  conftest-pass:
+    name: conftest test (passing fixture)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - uses: instrumenta/conftest-action@v0.5.1
+        with:
+          files: tests/fixtures/passing_plan.json
+          policy: policies/
+
+  conftest-fail:
+    name: conftest test (violating fixture should fail)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+      - name: Install conftest CLI
+        run: |
+          curl -sSL https://github.com/open-policy-agent/conftest/releases/download/v0.55.0/conftest_0.55.0_Linux_x86_64.tar.gz \
+            | tar -xz -C /usr/local/bin conftest
+          conftest --version
+
+      - name: Run conftest — expect failure
+        run: |
+          if conftest test tests/fixtures/violating_plan.json -p policies/ ; then
+            echo "ERROR: violating_plan.json should have failed but passed."
+            exit 1
+          else
+            echo "✓ violating_plan.json correctly produced violations."
+          fi

@@ -1,0 +1,106 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.9.5",
+  "resource_changes": [
+    {
+      "address": "aws_vpc.bad_tags",
+      "type": "aws_vpc",
+      "name": "bad_tags",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "cidr_block": "10.42.0.0/16",
+          "tags": {
+            "Name": "missing-mandatory-tags"
+          }
+        }
+      }
+    },
+    {
+      "address": "aws_db_instance.unencrypted",
+      "type": "aws_db_instance",
+      "name": "unencrypted",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "identifier": "bad-prod-db",
+          "storage_encrypted": false,
+          "deletion_protection": false,
+          "tags": {
+            "Environment": "prod",
+            "Project": "sample",
+            "Owner": "platform@devotica.com",
+            "CostCenter": "PLAT-001",
+            "ManagedBy": "Terraform",
+            "Repo": "https://github.com/devotica-labs/sample-infra"
+          }
+        }
+      }
+    },
+    {
+      "address": "aws_s3_bucket_public_access_block.weak",
+      "type": "aws_s3_bucket_public_access_block",
+      "name": "weak",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "block_public_acls": false,
+          "block_public_policy": true,
+          "ignore_public_acls": true,
+          "restrict_public_buckets": true
+        }
+      }
+    },
+    {
+      "address": "aws_iam_role_policy.too_open",
+      "type": "aws_iam_role_policy",
+      "name": "too_open",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"*\",\"Resource\":\"*\"}]}",
+          "tags": {
+            "Environment": "prod",
+            "Project": "sample",
+            "Owner": "platform@devotica.com",
+            "CostCenter": "PLAT-001",
+            "ManagedBy": "Terraform",
+            "Repo": "https://github.com/devotica-labs/sample-infra"
+          }
+        }
+      }
+    },
+    {
+      "address": "aws_security_group.open_ingress",
+      "type": "aws_security_group",
+      "name": "open_ingress",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "name": "open-prod-sg",
+          "ingress": [
+            {
+              "from_port": 22,
+              "to_port": 22,
+              "protocol": "tcp",
+              "cidr_blocks": ["0.0.0.0/0"]
+            }
+          ],
+          "tags": {
+            "Environment": "prod",
+            "Project": "sample",
+            "Owner": "platform@devotica.com",
+            "CostCenter": "PLAT-001",
+            "ManagedBy": "Terraform",
+            "Repo": "https://github.com/devotica-labs/sample-infra"
+          }
+        }
+      }
+    }
+  ]
+}

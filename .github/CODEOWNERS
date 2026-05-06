@@ -1,0 +1,5 @@
+# Default owner for all files
+* @devotica-labs/cloud-leads
+
+# Policy changes are security-sensitive — additional reviewer required
+/policies/ @devotica-labs/cloud-leads @devotica-labs/security
