@@ -1,0 +1,28 @@
+# release-please cuts versioned tags for the policy pack. The audit-trail
+# matters here because every Devotica CI run consumes this pack via the
+# `conftest-policy-ref` input on terraform-shared-config's reusable workflow.
+#
+# Consumers pin against floating @v1 (repointed on every release), so any
+# verdict-changing rule must be flagged in the CHANGELOG entry that
+# release-please generates from the Conventional Commit messages.
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release_please:
+    name: release-please
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: rp
+        with:
+          release-type: simple
+          token: ${{ secrets.GITHUB_TOKEN }}
