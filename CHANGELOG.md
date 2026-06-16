@@ -14,6 +14,14 @@ footer → major — only when an existing pass case becomes a fail).
 > the consumer-facing impact ("plans that previously passed will now fail
 > if ...").
 
+## [1.0.1](https://github.com/devotica-labs/terraform-policies/compare/v1.0.0...v1.0.1) (2026-06-16)
+
+
+### Bug Fixes
+
+* **ci:** replace dead instrumenta/conftest-action in conftest-pass job ([#3](https://github.com/devotica-labs/terraform-policies/issues/3)) ([d821e5a](https://github.com/devotica-labs/terraform-policies/commit/d821e5a9c3e3274fd574bb4b0ccfa4530a605ba2))
+* **ci:** replace dead instrumenta/conftest-action in conftest-pass job ([#4](https://github.com/devotica-labs/terraform-policies/issues/4)) ([3a307f6](https://github.com/devotica-labs/terraform-policies/commit/3a307f6b82a662a02ad4eb0448cfed8310df4568))
+
 ## [Unreleased]
 
 ### Added
