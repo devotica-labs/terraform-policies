@@ -14,7 +14,7 @@ footer → major — only when an existing pass case becomes a fail).
 > the consumer-facing impact ("plans that previously passed will now fail
 > if ...").
 
-## [1.0.1](https://github.com/devotica-labs/terraform-policies/compare/v1.0.0...v1.0.1) (2026-06-15)
+## [1.0.1](https://github.com/devotica-labs/terraform-policies/compare/v1.0.0...v1.0.1) (2026-06-16)
 
 
 ### Bug Fixes
